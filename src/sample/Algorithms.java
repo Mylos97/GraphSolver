@@ -44,7 +44,7 @@ public class Algorithms {
 
     public void Dijkstras() {
         long startTime = System.nanoTime();
-        clearArrays();
+        resetAlgorithms();
 
         ArrayList<Node> copyArray = new ArrayList<>();
         copyArray.addAll(copyNodes());
@@ -117,7 +117,7 @@ public class Algorithms {
     }
 
     public void Astar() {
-        clearArrays();
+        resetAlgorithms();
         long startTime = System.nanoTime();
 
         ArrayList<Node> copyArray = new ArrayList<>();
@@ -186,7 +186,8 @@ public class Algorithms {
     }
 
     public void Prims() {
-        clearArrays();
+        long start = System.nanoTime();
+        resetAlgorithms();
 
         ArrayList<Node> allNodes = new ArrayList<>();
         HashSet<Node> settledNodes = new HashSet<>();
@@ -209,6 +210,7 @@ public class Algorithms {
         while (settledNodes.size() != allNodes.size()) {
             currentEdge = unsettledEdges.poll();
             if (!settledNodes.contains(currentEdge.getTo())) {
+                distance += (int) currentEdge.getDistance();
                 settledNodes.add(currentEdge.getTo());
                 chosenEdges.add(currentEdge);
             }
@@ -218,6 +220,8 @@ public class Algorithms {
         shortestPathNodes.addAll(settledNodes);
         shortestPathEdges.addAll(chosenEdges);
 
+        long end = System.nanoTime();
+        duration = (end - start) / 1000000;
     }
 
     private ArrayList<Node> copyNodes() {
@@ -336,8 +340,9 @@ public class Algorithms {
         }
     }
 
-    private void clearArrays() {
+    public void resetAlgorithms() {
         distance = 0;
+        duration = 0;
         triedShortestPathEdges.clear();
         shortestPathNodes.clear();
         shortestPathEdges.clear();

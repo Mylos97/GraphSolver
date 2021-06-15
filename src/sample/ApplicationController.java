@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,7 +30,10 @@ public class ApplicationController {
         this.applicationView = view;
 
         //Generate the graph with input from the textfield
-        EventHandler<ActionEvent> generate = e -> createCircles(view, getInputNumber(view.inputNodesAndEdges));
+        EventHandler<ActionEvent> generate = e -> {
+            createNodes(view, getInputNumber(view.inputNodesAndEdges));
+            algorithms.resetAlgorithms();
+        };
         view.generateGraph.setOnAction(generate);
 
         //Show the distance of the edges
@@ -48,10 +50,10 @@ public class ApplicationController {
         view.canvas.setOnMouseClicked(e -> mouseEventOnCanvas(e, view));
 
         // Init creating of graph
-        createCircles(view, STARTNODEEDGEARRAY);
+        createNodes(view, STARTNODEEDGEARRAY);
     }
 
-    private void createCircles(ApplicationView view, int[] numberOfNodesEdges) {
+    private void createNodes(ApplicationView view, int[] numberOfNodesEdges) {
         algorithms.clearShortestPathEdges();
 
         //Check if correct input else generate standard graph
@@ -67,7 +69,12 @@ public class ApplicationController {
     private void flipShowDistance(ApplicationView view) {
         view.SHOWDISTANCE = !(view.SHOWDISTANCE);
         view.flipColor();
-        view.drawNodes();
+
+        if(algorithms.getDistance() != 0){
+            view.drawShortestPath();
+        } else {
+            view.drawNodes();
+        }
     }
 
     private int[] getInputNumber(TextField t) {
@@ -130,7 +137,6 @@ public class ApplicationController {
         //Lets check if the user selected the correct amount of nodes
         int selectedNodes = view.countSelected();
 
-        System.out.println(view.algorithms.getValue());
         if (view.algorithms.getValue().equals("Dijsktras") && selectedNodes == 2) {
             algorithms.Dijkstras();
             view.drawShortestPath();

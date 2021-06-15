@@ -93,6 +93,9 @@ public class ApplicationView {
         }
 
         for (Edge e : applicationController.algorithms.getShortestPathEdges()) {
+            if (SHOWDISTANCE) {
+                drawDistance(e, gc);
+            }
             drawLinesShortestPath(e, gc);
         }
 
@@ -110,10 +113,9 @@ public class ApplicationView {
 
         for (Edge e : graph.getEdgesToShow()) {
             if (SHOWDISTANCE) {
-                drawLinesAndDistance(e, gc);
-            } else {
-                drawLines(e, gc);
+                drawDistance(e, gc);
             }
+            drawLines(e, gc);
         }
 
         // Draw the nodes
@@ -131,12 +133,9 @@ public class ApplicationView {
         }
     }
 
-    private void drawLinesAndDistance(Edge e, GraphicsContext gc) {
-        gc.setLineWidth(0.1);
-        gc.setFill(Color.BLACK);
-        gc.setStroke(Color.GREY);
 
-        gc.strokeLine(e.getFrom().getPos()[0] + NODESIZE / 2, e.getFrom().getPos()[1] + NODESIZE / 2, e.getTo().getPos()[0] + NODESIZE / 2, e.getTo().getPos()[1] + NODESIZE / 2);
+    private void drawDistance(Edge e, GraphicsContext gc) {
+        gc.setFill(Color.BLACK);
         gc.fillText(String.valueOf((int) e.getDistance()), ((e.getFrom().getPos()[0] + e.getTo().getPos()[0]) / 2), ((e.getFrom().getPos()[1] + e.getTo().getPos()[1]) / 2));
     }
 
@@ -162,9 +161,6 @@ public class ApplicationView {
     private void drawNode(Node n, GraphicsContext gc) {
         gc.setFill(Color.GREY);
 
-        //Draw number
-        gc.fillText(String.valueOf(n.getId()), n.getPos()[0], n.getPos()[1] - 6);
-
         // Check if node is selected
         if (n.getSelected()) {
             gc.setFill(Color.YELLOW);
@@ -177,18 +173,18 @@ public class ApplicationView {
         gc.fillOval(n.getPos()[0], n.getPos()[1], NODESIZE, NODESIZE);
     }
 
+    private void drawNodeId(Node n, GraphicsContext gc) {
+        gc.setFill(Color.GREY);
+        gc.fillText(String.valueOf(n.getId()), n.getPos()[0], n.getPos()[1] - 6);
+    }
+
     private void drawNodeShortestpath(Node n, GraphicsContext gc) {
         gc.setFill(Color.DARKGRAY);
-
-        gc.fillText(String.valueOf(n.getId()), n.getPos()[0], n.getPos()[1] - 6);
-
-        if(n.getDistance() != Integer.MAX_VALUE){
-            gc.fillText(String.valueOf(n.getDistance()), n.getPos()[0], n.getPos()[1] - 16);
-        }
 
 
         // Check if node is selected
         if (n.getSelected()) {
+            gc.fillText(String.valueOf(n.getId()), n.getPos()[0], n.getPos()[1] - 6);
             gc.setFill(Color.GREEN);
         } else {
             gc.setFill(Color.GREY);
@@ -215,10 +211,10 @@ public class ApplicationView {
         return output;
     }
 
-    public int countSelected(){
+    public int countSelected() {
         int selected = 0;
-        for(Node n : graph.getNodes()){
-            if(n.getSelected()){
+        for (Node n : graph.getNodes()) {
+            if (n.getSelected()) {
                 selected++;
             }
         }

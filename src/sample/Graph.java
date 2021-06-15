@@ -36,7 +36,7 @@ public class Graph {
         int tries = 0;
 
         for (int i = 0; i < n; i++) {
-            nodes.add(new Node(new int[]{NODEOFFSET + r.nextInt(window_size[0] - NODEOFFSET), NODEOFFSET + r.nextInt(window_size[1] - NODEOFFSET)}, i));
+            nodes.add(new Node(new int[]{NODEOFFSET + r.nextInt(window_size[0] - NODEOFFSET*4), NODEOFFSET + r.nextInt(window_size[1] - NODEOFFSET*4)}, i));
         }
 
         for (int i = 0; i < n; i++) {
@@ -49,7 +49,7 @@ public class Graph {
                     tries++;
 
                     // Lets try 10 times to make short path
-                    if (tempInt != i && tries > 10) {
+                    if (tempInt != i && tries > 30) {
                         tries = 0;
                         break;
                     }
