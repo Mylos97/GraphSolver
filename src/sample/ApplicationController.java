@@ -70,7 +70,7 @@ public class ApplicationController {
         view.SHOWDISTANCE = !(view.SHOWDISTANCE);
         view.flipColor();
 
-        if(algorithms.getDistance() != 0){
+        if (algorithms.getDistance() != 0) {
             view.drawShortestPath();
         } else {
             view.drawNodes();
@@ -111,6 +111,8 @@ public class ApplicationController {
             }
 
             if (!foundString && correctArray(outputInts)) {
+                NUMBEROFNODES = outputInts[0];
+                NUMBEROFEDGES = outputInts[1];
                 return outputInts;
             }
 
@@ -150,8 +152,8 @@ public class ApplicationController {
             view.drawShortestPath();
             view.outputTextField.setText("Distance : " + algorithms.getDistance() + "\t" + " Computation time in milliseconds : " + String.valueOf(algorithms.getDuration()));
         } else {
-            graph.generateGraph(NUMBEROFNODES, NUMBEROFNODES);
-            view.outputTextField.setText("Please select the correct number of nodes for the algorithm");
+            graph.generateGraph(NUMBEROFNODES, NUMBEROFEDGES);
+            view.outputTextField.setText("Please select the correct number of nodes for the algorithm!");
             view.drawNodes();
         }
 
